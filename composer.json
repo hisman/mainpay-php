@@ -8,5 +8,15 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^7.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "MainPay\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MainPay\\Tests\\": "tests/"
+        }
     }
 }
