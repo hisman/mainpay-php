@@ -1,0 +1,12 @@
+{
+    "name": "mainpay/mainpay-php",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1.3",
+        "guzzlehttp/guzzle": "~6.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.5"
+    }
+}
