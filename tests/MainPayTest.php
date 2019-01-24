@@ -13,6 +13,7 @@ class MainPayTest extends TestCase
     protected $mainpay;
     protected $mainpay_sandbox;
     protected $server_key = 'test-server-key';
+    protected $transaction;
 
     protected function setUp()
     {
@@ -29,6 +30,52 @@ class MainPayTest extends TestCase
             'production' => false,
         ]);
         $this->mainpay_sandbox->setBaseUrl(self::SANDBOX_BASE_URL);
+
+        $this->transaction = [
+            'order_id' => 'ORDER-111',
+            'amount' => 1000000,
+            'customer' => [
+                'first_name' => 'Test',
+                'last_name' => 'MainPay',
+                'email' => 'test@mainpay.id',
+                'phone' => '081234566789',
+            ],
+            'billing_address' => [
+                'first_name' => 'Test',
+                'last_name' => 'MainPay',
+                'email' => 'test@mainpay.id',
+                'phone' => '081234566789',
+                'address' => 'Lengkong',
+                'city' => 'Bandung',
+                'postal_code' => '40264',
+                'country' => 'ID',
+            ],
+            'shipping_address' => [
+                'first_name' => 'Test',
+                'last_name' => 'MainPay',
+                'email' => 'test@mainpay.id',
+                'phone' => '081234566789',
+                'address' => 'Lengkong',
+                'city' => 'Bandung',
+                'postal_code' => '40264',
+                'country' => 'ID',
+            ],
+            'items' => [
+                [
+                    'item_id' => 'ITEM-111',
+                    'name' => 'MainPay T-Shirt',
+                    'price' => 250000,
+                    'quantity' => 1,
+                ],
+                [
+                    'item_id' => 'ITEM-112',
+                    'name' => 'MainPay Jacket',
+                    'price' => 750000,
+                    'quantity' => 1,
+                ],
+            ],
+            'enabled_payments' => ['permata_va', 'bni_va', 'bca_va'],
+        ];
     }
 
     public function testCreateMainPayInstance()
@@ -53,6 +100,26 @@ class MainPayTest extends TestCase
         $this->assertFalse($mainpay->getProduction());
         $this->assertSame($this->server_key, $mainpay->getServerKey());
         $this->assertSame('https://api.sandbox.mainpay.id', $mainpay->getBaseUrl());
+    }
+
+    public function testCreateTransaction()
+    {
+        $response = $this->mainpay->createTransaction($this->transaction);
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('token', $response);
+        $this->assertArrayHasKey('redirect_url', $response);
+        $this->assertTrue($response['production']);
+    }
+
+    public function testCreateTransactionInSandbox()
+    {
+        $response = $this->mainpay_sandbox->createTransaction($this->transaction);
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('token', $response);
+        $this->assertArrayHasKey('redirect_url', $response);
+        $this->assertFalse($response['production']);
     }
 
     public function testGetTransactions()

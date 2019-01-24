@@ -156,18 +156,30 @@ class MainPay
      * @param string $path
      * @return mixed
      */
-    public function request($method, $path, $version = 'v1')
+    public function request($method, $path, $options = [], $version = 'v1')
     {
         $path = '/'.$version.$path;
+        $options = array_merge(['auth' => [$this->server_key, '']], $options);
 
         try {
-            $response = $this->client->request($method, $path, ['auth' => [$this->server_key, '']]);
+            $response = $this->client->request($method, $path, $options);
             return json_decode($response->getBody(), true);
         } catch (ClientException $e) {
             if ($e->hasResponse()) {
                 return json_decode($e->getResponse()->getBody(), true);
             }
         }
+    }
+
+    /**
+     * Create transaction.
+     *
+     * @param array $transaction
+     * @return array
+     */
+    public function createTransaction($transaction)
+    {
+        return $this->request('POST', '/transactions', ['json' => $transaction]);
     }
 
     /**
