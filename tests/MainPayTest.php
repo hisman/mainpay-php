@@ -92,4 +92,40 @@ class MainPayTest extends TestCase
         $this->assertSame('19b749f4-3d20-4de9-ab4a-bcb35a9d1291', $response['transaction']['id']);
         $this->assertFalse($response['production']);
     }
+
+    public function testGetTransactionItems()
+    {
+        $response = $this->mainpay->getTransactionItems('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('items', $response);
+        $this->assertTrue($response['production']);
+    }
+
+    public function testGetTransactionItemsInSandbox()
+    {
+        $response = $this->mainpay_sandbox->getTransactionItems('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('items', $response);
+        $this->assertFalse($response['production']);
+    }
+
+    public function testGetTransactionStatus()
+    {
+        $response = $this->mainpay->getTransactionStatus('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('status', $response);
+        $this->assertTrue($response['production']);
+    }
+
+    public function testGetTransactionStatusInSandbox()
+    {
+        $response = $this->mainpay_sandbox->getTransactionStatus('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('status', $response);
+        $this->assertFalse($response['production']);
+    }
 }

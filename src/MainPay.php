@@ -190,4 +190,26 @@ class MainPay
     {
         return $this->request('GET', '/transactions/'.$id);
     }
+
+    /**
+     * Get transaction items.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getTransactionItems($id)
+    {
+        return $this->request('GET', '/transactions/'.$id.'/items');
+    }
+
+    /**
+     * Get transaction status.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getTransactionStatus($id)
+    {
+        return $this->request('GET', '/transactions/'.$id.'/status');
+    }
 }
