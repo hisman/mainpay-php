@@ -54,4 +54,22 @@ class MainPayTest extends TestCase
         $this->assertSame($this->server_key, $mainpay->getServerKey());
         $this->assertSame('https://api.sandbox.mainpay.id', $mainpay->getBaseUrl());
     }
+
+    public function testGetTransactions()
+    {
+        $response = $this->mainpay->getTransactions();
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('transactions', $response);
+        $this->assertTrue($response['production']);
+    }
+
+    public function testGetTransactionsInSandbox()
+    {
+        $response = $this->mainpay_sandbox->getTransactions();
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('transactions', $response);
+        $this->assertFalse($response['production']);
+    }
 }

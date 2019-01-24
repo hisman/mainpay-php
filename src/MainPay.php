@@ -169,4 +169,14 @@ class MainPay
             }
         }
     }
+
+    /**
+     * Get transactions list.
+     *
+     * @return array
+     */
+    public function getTransactions()
+    {
+        return $this->request('GET', '/transactions');
+    }
 }
