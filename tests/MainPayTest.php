@@ -72,4 +72,24 @@ class MainPayTest extends TestCase
         $this->assertArrayHasKey('transactions', $response);
         $this->assertFalse($response['production']);
     }
+
+    public function testGetTransaction()
+    {
+        $response = $this->mainpay->getTransaction('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('transaction', $response);
+        $this->assertSame('19b749f4-3d20-4de9-ab4a-bcb35a9d1291', $response['transaction']['id']);
+        $this->assertTrue($response['production']);
+    }
+
+    public function testGetTransactionInSandbox()
+    {
+        $response = $this->mainpay_sandbox->getTransaction('19b749f4-3d20-4de9-ab4a-bcb35a9d1291');
+
+        $this->assertArrayHasKey('production', $response);
+        $this->assertArrayHasKey('transaction', $response);
+        $this->assertSame('19b749f4-3d20-4de9-ab4a-bcb35a9d1291', $response['transaction']['id']);
+        $this->assertFalse($response['production']);
+    }
 }

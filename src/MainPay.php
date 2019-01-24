@@ -179,4 +179,15 @@ class MainPay
     {
         return $this->request('GET', '/transactions');
     }
+
+    /**
+     * Get single transaction.
+     *
+     * @param string $id
+     * @return array
+     */
+    public function getTransaction($id)
+    {
+        return $this->request('GET', '/transactions/'.$id);
+    }
 }
